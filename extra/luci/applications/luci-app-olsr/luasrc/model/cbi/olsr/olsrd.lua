@@ -71,9 +71,9 @@ tos.placeholder = "16"
 fib = s:taboption("general", ListValue, "FIBMetric", translate("FIB metric"),
 	translate ("FIBMetric controls the metric value of the host-routes OLSRd sets. "..
 	"\"flat\" means that the metric value is always 2. This is the preferred value "..
-	"because it helps the linux kernel routing to clean up older routes. "..
+	"because it helps the Linux kernel routing to clean up older routes. "..
 	"\"correct\" uses the hopcount as the metric value. "..
-	"\"approx\" use the hopcount as the metric value too, but does only update the hopcount if the nexthop changes too. "..
+	"\"approx\" uses the hopcount as the metric value too, but does only update the hopcount if the nexthop changes too. "..
 	"Default is \"flat\"."))
 fib:value("flat")
 fib:value("correct")
@@ -144,7 +144,7 @@ sgw.enabled="yes"
 sgw.disabled="no"
 sgw.rmempty = true
 
-sgwnat = s:taboption("smartgw", Flag, "SmartGatewayAllowNAT", translate("Allow gateways with NAT"), translate("Allow the selection of an outgoing ipv4 gateway with NAT"))
+sgwnat = s:taboption("smartgw", Flag, "SmartGatewayAllowNAT", translate("Allow gateways with NAT"), translate("Allow the selection of an outgoing IPv4 gateway with NAT"))
 sgwnat:depends("SmartGateway", "yes")
 sgwnat.default="yes"
 sgwnat.enabled="yes"
@@ -224,8 +224,8 @@ i:tab("addrs",   translate("IP Addresses"))
 i:tab("timing",  translate("Timing and Validity"))
 
 mode = i:taboption("general", ListValue, "Mode", translate("Mode"),
-	translate("Interface Mode is used to prevent unnecessary packet forwarding on switched ethernet interfaces. "..
-	"valid Modes are \"mesh\" and \"ether\". Default is \"mesh\"."))
+	translate("Interface mode is used to prevent unnecessary packet forwarding on switched ethernet interfaces. "..
+	"Valid modes are \"mesh\" and \"ether\". Default is \"mesh\"."))
 mode:value("mesh")
 mode:value("ether")
 mode.optional = true
@@ -259,7 +259,7 @@ function lqmult.validate(self, value)
 			local host = val[1]
 			local mult = val[2]
 			if not host or not mult then
-				return nil, translate("LQMult requires two values (IP address or 'default' and multiplicator) seperated by space.")
+				return nil, translate("LQMult requires two values (IP address or 'default' and multiplicator) separated by space.")
 			end
 			if not (host == "default" or ip.IPv4(host) or ip.IPv6(host)) then
 				return nil, translate("Can only be a valid IPv4 or IPv6 address or 'default'")

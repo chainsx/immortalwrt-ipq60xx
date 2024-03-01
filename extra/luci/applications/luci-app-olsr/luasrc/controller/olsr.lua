@@ -26,6 +26,7 @@ function index()
 	page.target = template("status-olsr/overview")
 	page.title  = _("OLSR")
 	page.subindex = true
+	page.acl_depends = { "luci-app-olsr" }
 
 	local page  = node("admin", "status", "olsr", "json")
 	page.target = call("action_json")
@@ -74,7 +75,6 @@ function index()
 		{"admin", "services", "olsrd", "display"},
 		cbi("olsr/olsrddisplay"), _("Display")
 	)
-
 end
 
 function action_json()
@@ -87,8 +87,8 @@ function action_json()
 	local v4_port = tonumber(uci:get("olsrd", "olsrd_jsoninfo", "port") or "") or 9090
 	local v6_port = tonumber(uci:get("olsrd6", "olsrd_jsoninfo", "port") or "") or 9090
 
-	jsonreq4 = utl.exec("(echo /status | nc 127.0.0.1 %d | sed -n '/^[}{ ]/p') 2>/dev/null" % v4_port)
-	jsonreq6 = utl.exec("(echo /status | nc ::1 %d | sed -n '/^[}{ ]/p') 2>/dev/null" % v6_port)
+	jsonreq4 = utl.exec("(echo /all | nc 127.0.0.1 %d | sed -n '/^[}{ ]/p') 2>/dev/null" % v4_port)
+	jsonreq6 = utl.exec("(echo /all | nc ::1 %d | sed -n '/^[}{ ]/p') 2>/dev/null" % v6_port)
 	http.prepare_content("application/json")
 	if not jsonreq4 or jsonreq4 == "" then
 		jsonreq4 = "{}"
@@ -130,7 +130,6 @@ function action_neigh(json)
 	local devices  = ntm:get_wifidevs()
 	local sys = require "luci.sys"
 	local assoclist = {}
-	--local neightbl = require "neightbl"
 	local ntm = require "luci.model.network"
 	local ipc = require "luci.ip"
 	local nxo = require "nixio"
@@ -300,7 +299,7 @@ function action_mid()
 
 	local function compare(a,b)
 		if a.proto == b.proto then
-			return a.ipAddress < b.ipAddress
+			return a.main.ipAddress < b.main.ipAddress
 		else
 			return a.proto < b.proto
 		end
@@ -318,24 +317,34 @@ function action_smartgw()
 
 	local function compare(a,b)
 		if a.proto == b.proto then
-			return a.tcPathCost < b.tcPathCost
+			return a.cost < b.cost
 		else
 			return a.proto < b.proto
 		end
 	end
 
-	table.sort(data, compare)
+	table.sort(data.ipv4, compare)
+	table.sort(data.ipv6, compare)
 	luci.template.render("status-olsr/smartgw", {gws=data, has_v4=has_v4, has_v6=has_v6})
 end
 
 function action_interfaces()
 	local data, has_v4, has_v6, error = fetch_jsoninfo('interfaces')
+	local ntm = require "luci.model.network".init()
+
 	if error then
 		return
 	end
 
 	local function compare(a,b)
 		return a.proto < b.proto
+	end
+
+	for k, v in ipairs(data) do
+		local interface = ntm:get_status_by_address(v.olsrInterface.ipAddress)
+		if interface then
+			v.interface = interface
+		end
 	end
 
 	table.sort(data, compare)
@@ -369,9 +378,9 @@ function fetch_jsoninfo(otable)
 
 	if jsonreq4 ~= "" then
 		has_v4 = 1
-		jsondata4 = json.decode(jsonreq4)
+		jsondata4 = json.decode(jsonreq4) or {}
 		if otable == 'status' then
-			data4 = jsondata4 or {}
+			data4 = jsondata4
 		else
 			data4 = jsondata4[otable] or {}
 		end
@@ -383,9 +392,9 @@ function fetch_jsoninfo(otable)
 	end
 	if jsonreq6 ~= "" then
 		has_v6 = 1
-		jsondata6 = json.decode(jsonreq6)
+		jsondata6 = json.decode(jsonreq6) or {}
 		if otable == 'status' then
-			data6 = jsondata6 or {}
+			data6 = jsondata6
 		else
 			data6 = jsondata6[otable] or {}
 		end

@@ -1,10 +1,8 @@
 -- Copyright 2016-2018 Stan Grishin <stangri@melmac.net>
 -- Licensed to the public under the Apache License 2.0.
 
-local readmeURL = "https://github.com/openwrt/packages/tree/master/net/simple-adblock/files/README.md"
--- local readmeURL = "https://github.com/stangri/openwrt_packages/tree/master/simple-adblock/files/README.md"
-
 local packageName = "simple-adblock"
+local readmeURL = "https://docs.openwrt.melmac.net/" .. packageName .. "/"
 local uci = require "luci.model.uci".cursor()
 local util = require "luci.util"
 local sys = require "luci.sys"
@@ -85,6 +83,10 @@ elseif targetDNS == "dnsmasq.conf" then
 	outputFile="/var/dnsmasq.d/" .. packageName .. ""
 	outputCache="/var/run/" .. packageName .. ".dnsmasq.cache"
 	outputGzip="/etc/" .. packageName .. ".dnsmasq.gz"
+elseif targetDNS == "dnsmasq.ipset" then
+	outputFile="/var/dnsmasq.d/" .. packageName .. ".ipset"
+	outputCache="/var/run/" .. packageName .. ".ipset.cache"
+	outputGzip="/etc/" .. packageName .. ".ipset.gz"
 elseif targetDNS == "dnsmasq.servers" then
 	outputFile="/var/run/" .. packageName .. ".servers"
 	outputCache="/var/run/" .. packageName .. ".servers.cache"
@@ -197,7 +199,7 @@ else
 		ss = h:option(DummyValue, "_dummy", translate("Service Status"))
 		ss.template = "simple-adblock/status"
 		if tmpfsStatus == "statusSuccess" then
-			ss.value = translatef("%s is blocking %s domains (with %s).", packageVersion, getFileLines(outputFile), targetDNS)
+			ss.value = translatef("Blocking %s domains (with %s).", getFileLines(outputFile), targetDNS)
 		else
 			ss.value = statusTable[tmpfsStatus]
 		end
@@ -208,7 +210,7 @@ else
 		end
 		if tmpfsError then
 			es = h:option(DummyValue, "_dummy", translate("Collected Errors"))
-			es.template = "simple-adblock/error"
+			es.template = "simple-adblock/status"
 			es.value = ""
 			local err, e, url
 			for err in tmpfsError:gmatch("[%p%w]+") do
@@ -222,7 +224,7 @@ else
 		end
 	end
 	if packageVersion ~= "" then
-		buttons = h:option(DummyValue, "_dummy")
+		buttons = h:option(DummyValue, "_dummy", translate("Service Control"))
 		buttons.template = packageName .. "/buttons"
 	end
 end
@@ -264,7 +266,7 @@ end
 
 s:tab("advanced", translate("Advanced Configuration"))
 
-local dns_descr = translatef("Pick the DNS resolution option to create the adblock list for, see the <a href=\"%s#dns-resolution-option\" target=\"_blank\">README</a> for details.", readmeURL)
+local dns_descr = translatef("Pick the DNS resolution option to create the adblock list for, see the %sREADME%s for details.", "<a href=\"" .. readmeURL .. "#dns-resolution-option\" target=\"_blank\">", "</a>")
 
 if not checkDnsmasq() then
 	dns_descr = dns_descr .. "<br />" .. translatef("Please note that %s is not supported on this system.", "<i>dnsmasq.addnhosts</i>")

@@ -76,6 +76,9 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
 	$(INSTALL_CONF) ./root/etc/uci-defaults/* $(1)/etc/uci-defaults
 
+	$(INSTALL_DIR) $(1)/usr/share/rpcd/acl.d
+	cp -pR ./root/usr/share/rpcd/acl.d/* $(1)/usr/share/rpcd/acl.d
+
 	$(INSTALL_DIR) $(1)/usr/share/pingos
 	cp -pR $(PKG_INSTALL_DIR)/usr/share/pingos/conf $(1)/usr/share/pingos
 	$(INSTALL_DATA) ./root/resource/conf-template/nginx.conf $(1)/usr/share/pingos/conf/nginx.conf
@@ -88,7 +91,7 @@ define Package/$(PKG_NAME)/install
 	cp -pR ./luasrc/* $(1)/usr/lib/lua/luci/
 	
 	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/i18n
-	po2lmo ./po/zh-cn/pingos.po $(1)/usr/lib/lua/luci/i18n/pingos.zh-cn.lmo
+	po2lmo ./po/zh_Hans/pingos.po $(1)/usr/lib/lua/luci/i18n/pingos.zh-cn.lmo
 	
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/nginx $(1)/usr/sbin/pingos

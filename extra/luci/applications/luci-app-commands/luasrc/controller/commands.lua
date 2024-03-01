@@ -4,7 +4,7 @@
 module("luci.controller.commands", package.seeall)
 
 function index()
-	entry({"admin", "system", "commands"}, firstchild(), _("Custom Commands"), 80)
+	entry({"admin", "system", "commands"}, firstchild(), _("Custom Commands"), 80).acl_depends = { "luci-app-commands" }
 	entry({"admin", "system", "commands", "dashboard"}, template("commands"), _("Dashboard"), 1)
 	entry({"admin", "system", "commands", "config"}, cbi("commands"), _("Configure"), 2)
 	entry({"admin", "system", "commands", "run"}, call("action_run"), nil, 3).leaf = true
@@ -144,7 +144,7 @@ local function parse_cmdline(cmdid, args)
 		end
 
 		for i, v in ipairs(argv) do
-			if v:match("[^%w%.%-i/]") then
+			if v:match("[^%w%.%-i/|]") then
 				argv[i] = '"%s"' % v:gsub('"', '\\"')
 			end
 		end

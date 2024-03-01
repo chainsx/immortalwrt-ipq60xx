@@ -40,7 +40,7 @@ QCA99X0_BOARD2_REV:=ddcec9efd245da9365c474f513a855a55f3ac7fe
 QCA99X0_BOARD2_FILE:=ath10k-firmware-$(QCA99X0_BOARD2_REV)-qca99x0-board-2.bin
 define Download/qca99x0-board2
   FILE:=$(QCA99X0_BOARD2_FILE)
-  URL:=https://source.codeaurora.org/quic/qsdk/oss/firmware/ath10k-firmware/plain/ath10k/QCA99X0/hw2.0
+  URL:=https://git.codelinaro.org/clo/qsdk/oss/firmware/ath10k-firmware/plain/ath10k/QCA99X0/hw2.0
   URL_FILE:=board-2.bin?id=$(QCA99X0_BOARD2_REV)
   HASH:=03711ac21e60ef59d3815e235eb721c0c22851b5410299411085aa6f2af45401
 endef

@@ -4,5 +4,12 @@
 module("luci.controller.cd8021x", package.seeall)
 
 function index()
-        entry({"admin", "network", "cd8021x"}, cbi("cd8021x"), _("802.1x Client"), 100).dependent = true
-        end
+	if not nixio.fs.access("/etc/config/cd8021x") then
+		return
+	end
+
+	local page = entry({"admin", "network", "cd8021x"}, cbi("cd8021x"), _("802.1x Client"))
+	page.order = 100
+	page.dependent = true
+	page.acl_depends = { "luci-app-cd8021x" }
+end

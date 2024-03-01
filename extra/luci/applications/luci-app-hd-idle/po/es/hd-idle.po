@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-14 10:33+0200\n"
-"PO-Revision-Date: 2021-02-11 14:23+0000\n"
+"PO-Revision-Date: 2022-05-16 00:02+0000\n"
 "Last-Translator: Franco Castillo <castillofrancodamian@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/openwrt/"
 "luciapplicationshd-idle/es/>\n"
@@ -12,17 +12,30 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.5-dev\n"
+"X-Generator: Weblate 4.13-dev\n"
 
+#: applications/luci-app-hd-idle/htdocs/luci-static/resources/view/hd_idle.js:22
+msgid "Add new hdd setting..."
+msgstr "Agregar nueva configuración de disco duro..."
+
+#: applications/luci-app-hd-idle/htdocs/luci-static/resources/view/hd_idle.js:27
 msgid "Disk"
 msgstr "Disco"
 
+#: applications/luci-app-hd-idle/htdocs/luci-static/resources/view/hd_idle.js:24
 msgid "Enable"
 msgstr "Activar"
 
-msgid "HDD Idle"
-msgstr "HDD Idle"
+#: applications/luci-app-hd-idle/root/usr/share/rpcd/acl.d/luci-app-hd-idle.json:3
+msgid "Grant UCI access for luci-app-hd-idle"
+msgstr "Conceder acceso UCI para luci-app-hd-idle"
 
+#: applications/luci-app-hd-idle/htdocs/luci-static/resources/view/hd_idle.js:17
+#: applications/luci-app-hd-idle/root/usr/share/luci/menu.d/luci-app-hd-idle.json:3
+msgid "HDD Idle"
+msgstr "Suspensión de discos"
+
+#: applications/luci-app-hd-idle/htdocs/luci-static/resources/view/hd_idle.js:17
 msgid ""
 "HDD Idle is a utility program for spinning-down external disks after a "
 "period of idle time."
@@ -30,22 +43,34 @@ msgstr ""
 "HDD Idle es un programa que administra la suspensión de discos externos tras "
 "un tiempo de inactividad."
 
+#: applications/luci-app-hd-idle/htdocs/luci-static/resources/view/hd_idle.js:32
 msgid "Idle time"
 msgstr "Tiempo de inactividad"
 
+#: applications/luci-app-hd-idle/htdocs/luci-static/resources/view/hd_idle.js:35
 msgid "Idle time unit"
-msgstr "Unidad de tiempo"
+msgstr "Unidad de tiempo de inactividad"
 
+#: applications/luci-app-hd-idle/htdocs/luci-static/resources/view/hd_idle.js:19
 msgid "Settings"
 msgstr "Configuraciones"
 
-# Hours
+#: applications/luci-app-hd-idle/htdocs/luci-static/resources/view/hd_idle.js:39
+msgctxt "Abbreviation for days"
+msgid "d"
+msgstr "d"
+
+#: applications/luci-app-hd-idle/htdocs/luci-static/resources/view/hd_idle.js:38
+msgctxt "Abbreviation for hours"
 msgid "h"
-msgstr "Horas"
+msgstr "h"
 
-# Minutes (not minimum)
+#: applications/luci-app-hd-idle/htdocs/luci-static/resources/view/hd_idle.js:37
+msgctxt "Abbreviation for minutes"
 msgid "min"
-msgstr "Minutos"
+msgstr "min"
 
-msgid "Enable debug"
-msgstr "Activar depuración"
+#: applications/luci-app-hd-idle/htdocs/luci-static/resources/view/hd_idle.js:36
+msgctxt "Abbreviation for seconds"
+msgid "s"
+msgstr "s"
