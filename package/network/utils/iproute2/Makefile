@@ -118,7 +118,7 @@ endif
 
 ifeq ($(BUILD_VARIANT),ipfull)
   HAVE_ELF:=y
-  LIBBPF_FORCE:=on
+  LIBBPF_FORCE:=off
 endif
 
 ifeq ($(BUILD_VARIANT),tctiny)
