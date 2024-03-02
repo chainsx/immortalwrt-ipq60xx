@@ -639,12 +639,16 @@ local methods = {
 	},
 
 	getCPUUsage = {
-		call = function()
-			local sys = require "luci.sys"
-			local cpuusage = sys.exec("top -n1 | awk '/^CPU/ {printf(\"%d%%\", 100 - $8)}'") or "?"
-			return { cpuusage = cpuusage }
-		end
-	},
+                call = function()
+                        local sys = require "luci.sys"
+                        local nss_usage = "  "
+                        if fs.access("/sys/kernel/debug/qca-nss-drv/stats/cpu_load_ubi") then
+                                nss_usage = "  NSS: " .. sys.exec("grep '%' /sys/kernel/debug/qca-nss-drv/stats/cpu_load_ubi | awk -F ' ' '{print $2}'")
+                        end
+                        local cpuusage = "CPU: " .. sys.exec("top -n1 | awk '/^CPU/ {printf(\"%d%%\", 100 - $8)}'") .. nss_usage
+                        return { cpuusage = cpuusage }
+                end
+        },
 
 	getETHInfo = {
 		call = function()
